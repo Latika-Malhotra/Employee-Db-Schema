@@ -1,6 +1,90 @@
+USE [EmployeeDb]
+GO
+/****** Object:  Trigger [EmployeeAuditTrigger]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP TRIGGER [dbo].[EmployeeAuditTrigger]
+GO
+/****** Object:  Trigger [DepartmentAuditTrigger]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP TRIGGER [dbo].[DepartmentAuditTrigger]
+GO
+/****** Object:  Trigger [AddressAuditTriiger]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP TRIGGER [dbo].[AddressAuditTriiger]
+GO
+/****** Object:  StoredProcedure [dbo].[updateEmployee]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[updateEmployee]
+GO
+/****** Object:  StoredProcedure [dbo].[updateDepartment]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[updateDepartment]
+GO
+/****** Object:  StoredProcedure [dbo].[getEmployeeInfo]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[getEmployeeInfo]
+GO
+/****** Object:  StoredProcedure [dbo].[getDepartmentInfo]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[getDepartmentInfo]
+GO
+/****** Object:  StoredProcedure [dbo].[getAllEmployees]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[getAllEmployees]
+GO
+/****** Object:  StoredProcedure [dbo].[getAllDepartments]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[getAllDepartments]
+GO
+/****** Object:  StoredProcedure [dbo].[deleteEmployee]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[deleteEmployee]
+GO
+/****** Object:  StoredProcedure [dbo].[deleteDepartment]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[deleteDepartment]
+GO
+/****** Object:  StoredProcedure [dbo].[createEmployee]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[createEmployee]
+GO
+/****** Object:  StoredProcedure [dbo].[createDepartment]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP PROCEDURE [dbo].[createDepartment]
+GO
+ALTER TABLE [dbo].[Employee] DROP CONSTRAINT [FK__Employee__depart__114A936A]
+GO
+ALTER TABLE [dbo].[Address] DROP CONSTRAINT [FK__Address__employe__17F790F9]
+GO
+ALTER TABLE [dbo].[Employee_Audit] DROP CONSTRAINT [DF__Employee___creat__14270015]
+GO
+ALTER TABLE [dbo].[Employee] DROP CONSTRAINT [DF__Employee__IsDele__10566F31]
+GO
+ALTER TABLE [dbo].[Employee] DROP CONSTRAINT [DF__Employee__create__0F624AF8]
+GO
+ALTER TABLE [dbo].[Department] DROP CONSTRAINT [DF__Departmen__IsDel__0A9D95DB]
+GO
+ALTER TABLE [dbo].[Department] DROP CONSTRAINT [DF__Departmen__creat__09A971A2]
+GO
+ALTER TABLE [dbo].[Address] DROP CONSTRAINT [DF__Address__created__17036CC0]
+GO
+/****** Object:  Table [dbo].[Employee_Audit]    Script Date: 07-06-2023 12:16:19 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Employee_Audit]') AND type in (N'U'))
+DROP TABLE [dbo].[Employee_Audit]
+GO
+/****** Object:  Table [dbo].[Employee]    Script Date: 07-06-2023 12:16:19 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Employee]') AND type in (N'U'))
+DROP TABLE [dbo].[Employee]
+GO
+/****** Object:  Table [dbo].[Department_Audit]    Script Date: 07-06-2023 12:16:19 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department_Audit]') AND type in (N'U'))
+DROP TABLE [dbo].[Department_Audit]
+GO
+/****** Object:  Table [dbo].[Department]    Script Date: 07-06-2023 12:16:19 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Department]') AND type in (N'U'))
+DROP TABLE [dbo].[Department]
+GO
+/****** Object:  Table [dbo].[Address_Audit]    Script Date: 07-06-2023 12:16:19 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Address_Audit]') AND type in (N'U'))
+DROP TABLE [dbo].[Address_Audit]
+GO
+/****** Object:  Table [dbo].[Address]    Script Date: 07-06-2023 12:16:19 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Address]') AND type in (N'U'))
+DROP TABLE [dbo].[Address]
+GO
 USE [master]
 GO
-/****** Object:  Database [EmployeeDb]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  Database [EmployeeDb]    Script Date: 07-06-2023 12:16:19 PM ******/
+DROP DATABASE [EmployeeDb]
+GO
+/****** Object:  Database [EmployeeDb]    Script Date: 07-06-2023 12:16:19 PM ******/
 CREATE DATABASE [EmployeeDb]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -87,7 +171,7 @@ ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
 GO
 USE [EmployeeDb]
 GO
-/****** Object:  Table [dbo].[Address]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  Table [dbo].[Address]    Script Date: 07-06-2023 12:16:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -107,7 +191,28 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Department]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  Table [dbo].[Address_Audit]    Script Date: 07-06-2023 12:16:20 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Address_Audit](
+	[audit_id] [int] IDENTITY(1,1) NOT NULL,
+	[address_id] [int] NULL,
+	[employee_id] [int] NULL,
+	[street_address] [varchar](100) NULL,
+	[city] [varchar](50) NULL,
+	[state] [varchar](50) NULL,
+	[zip_code] [varchar](10) NULL,
+	[action] [varchar](10) NULL,
+	[action_date] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[audit_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Department]    Script Date: 07-06-2023 12:16:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -118,13 +223,32 @@ CREATE TABLE [dbo].[Department](
 	[description] [varchar](200) NULL,
 	[created_on] [date] NULL,
 	[updated_on] [date] NULL,
+	[IsDelete] [bit] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[department_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Employee]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  Table [dbo].[Department_Audit]    Script Date: 07-06-2023 12:16:20 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Department_Audit](
+	[audit_id] [int] IDENTITY(1,1) NOT NULL,
+	[department_id] [int] NULL,
+	[name] [varchar](50) NULL,
+	[description] [varchar](200) NULL,
+	[action] [varchar](10) NULL,
+	[action_date] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[audit_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Employee]    Script Date: 07-06-2023 12:16:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -138,13 +262,14 @@ CREATE TABLE [dbo].[Employee](
 	[department_id] [int] NULL,
 	[created_on] [date] NULL,
 	[updated_on] [date] NULL,
+	[IsDelete] [bit] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[employee_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Employee_Audit]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  Table [dbo].[Employee_Audit]    Script Date: 07-06-2023 12:16:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -167,88 +292,17 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Salary]    Script Date: 29-03-2023 06:15:31 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Salary](
-	[salary_id] [int] IDENTITY(1,1) NOT NULL,
-	[employee_id] [int] NULL,
-	[amount] [float] NULL,
-	[start_date] [date] NULL,
-	[end_date] [date] NULL,
-	[created_on] [date] NULL,
-	[updated_on] [date] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[salary_id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-SET IDENTITY_INSERT [dbo].[Address] ON 
-GO
-INSERT [dbo].[Address] ([address_id], [employee_id], [street_address], [city], [state], [zip_code], [created_on], [updated_on]) VALUES (1, 1, N'Janakpuri', N'New Delhi', N'Delhi', N'110019', CAST(N'2023-03-29' AS Date), CAST(N'2023-03-29' AS Date))
-GO
-INSERT [dbo].[Address] ([address_id], [employee_id], [street_address], [city], [state], [zip_code], [created_on], [updated_on]) VALUES (4, 4, N'GK', N'New Delhi', N'Delhi', N'110098', CAST(N'2023-03-29' AS Date), NULL)
-GO
-SET IDENTITY_INSERT [dbo].[Address] OFF
-GO
-SET IDENTITY_INSERT [dbo].[Department] ON 
-GO
-INSERT [dbo].[Department] ([department_id], [name], [description], [created_on], [updated_on]) VALUES (1, N'IT', N'IT Department', CAST(N'2023-03-29' AS Date), NULL)
-GO
-INSERT [dbo].[Department] ([department_id], [name], [description], [created_on], [updated_on]) VALUES (2, N'Marketing', N'Marketing Department', CAST(N'2023-03-29' AS Date), NULL)
-GO
-INSERT [dbo].[Department] ([department_id], [name], [description], [created_on], [updated_on]) VALUES (3, N'Human Resource', N'Human Resource Department', CAST(N'2023-03-29' AS Date), NULL)
-GO
-INSERT [dbo].[Department] ([department_id], [name], [description], [created_on], [updated_on]) VALUES (4, N'Sales', N'Sales Department', CAST(N'2023-03-29' AS Date), NULL)
-GO
-SET IDENTITY_INSERT [dbo].[Department] OFF
-GO
-SET IDENTITY_INSERT [dbo].[Employee] ON 
-GO
-INSERT [dbo].[Employee] ([employee_id], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (1, N'Megha', N'Malhotra', 25, N'Female', 1, CAST(N'2023-03-29' AS Date), CAST(N'2023-03-29' AS Date))
-GO
-INSERT [dbo].[Employee] ([employee_id], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (4, N'Harsh', N'Sehgal', 29, N'Male', 2, CAST(N'2023-03-29' AS Date), NULL)
-GO
-SET IDENTITY_INSERT [dbo].[Employee] OFF
-GO
-SET IDENTITY_INSERT [dbo].[Employee_Audit] ON 
-GO
-INSERT [dbo].[Employee_Audit] ([audit_id], [employee_id], [action], [action_date], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (1, 1, N'Insert', CAST(N'2023-03-29T03:52:26.127' AS DateTime), N'Latika', N'Malhotra', 25, N'Female', 1, CAST(N'2023-03-29' AS Date), NULL)
-GO
-INSERT [dbo].[Employee_Audit] ([audit_id], [employee_id], [action], [action_date], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (2, 1, N'Update', CAST(N'2023-03-29T04:07:35.590' AS DateTime), N'Megha', N'Malhotra', 25, N'Female', 1, NULL, CAST(N'2023-03-29' AS Date))
-GO
-INSERT [dbo].[Employee_Audit] ([audit_id], [employee_id], [action], [action_date], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (3, 2, N'Insert', CAST(N'2023-03-29T04:08:28.007' AS DateTime), N'Harsh', N'Sehgal', 29, N'Male', 2, CAST(N'2023-03-29' AS Date), NULL)
-GO
-INSERT [dbo].[Employee_Audit] ([audit_id], [employee_id], [action], [action_date], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (4, 3, N'Insert', CAST(N'2023-03-29T04:09:41.580' AS DateTime), N'Harsh', N'Sehgal', 29, N'Male', 2, CAST(N'2023-03-29' AS Date), NULL)
-GO
-INSERT [dbo].[Employee_Audit] ([audit_id], [employee_id], [action], [action_date], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (5, 4, N'Insert', CAST(N'2023-03-29T04:11:38.153' AS DateTime), N'Harsh', N'Sehgal', 29, N'Male', 2, CAST(N'2023-03-29' AS Date), NULL)
-GO
-INSERT [dbo].[Employee_Audit] ([audit_id], [employee_id], [action], [action_date], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (6, 2, N'Delete', CAST(N'2023-03-29T04:13:31.230' AS DateTime), N'Harsh', N'Sehgal', 29, N'Male', 2, NULL, CAST(N'2023-03-29' AS Date))
-GO
-INSERT [dbo].[Employee_Audit] ([audit_id], [employee_id], [action], [action_date], [first_name], [last_name], [age], [gender], [department_id], [created_on], [updated_on]) VALUES (7, 3, N'Delete', CAST(N'2023-03-29T04:13:57.400' AS DateTime), N'Harsh', N'Sehgal', 29, N'Male', 2, NULL, CAST(N'2023-03-29' AS Date))
-GO
-SET IDENTITY_INSERT [dbo].[Employee_Audit] OFF
-GO
-SET IDENTITY_INSERT [dbo].[Salary] ON 
-GO
-INSERT [dbo].[Salary] ([salary_id], [employee_id], [amount], [start_date], [end_date], [created_on], [updated_on]) VALUES (1, 1, 98789, CAST(N'2023-03-01' AS Date), CAST(N'2023-03-31' AS Date), CAST(N'2023-03-29' AS Date), NULL)
-GO
-INSERT [dbo].[Salary] ([salary_id], [employee_id], [amount], [start_date], [end_date], [created_on], [updated_on]) VALUES (2, 1, 98767, CAST(N'2023-02-01' AS Date), CAST(N'2023-02-28' AS Date), CAST(N'2023-03-29' AS Date), NULL)
-GO
-SET IDENTITY_INSERT [dbo].[Salary] OFF
-GO
 ALTER TABLE [dbo].[Address] ADD  DEFAULT (getdate()) FOR [created_on]
 GO
 ALTER TABLE [dbo].[Department] ADD  DEFAULT (getdate()) FOR [created_on]
 GO
+ALTER TABLE [dbo].[Department] ADD  DEFAULT ((0)) FOR [IsDelete]
+GO
 ALTER TABLE [dbo].[Employee] ADD  DEFAULT (getdate()) FOR [created_on]
 GO
-ALTER TABLE [dbo].[Employee_Audit] ADD  DEFAULT (getdate()) FOR [created_on]
+ALTER TABLE [dbo].[Employee] ADD  DEFAULT ((0)) FOR [IsDelete]
 GO
-ALTER TABLE [dbo].[Salary] ADD  DEFAULT (getdate()) FOR [created_on]
+ALTER TABLE [dbo].[Employee_Audit] ADD  DEFAULT (getdate()) FOR [created_on]
 GO
 ALTER TABLE [dbo].[Address]  WITH CHECK ADD FOREIGN KEY([employee_id])
 REFERENCES [dbo].[Employee] ([employee_id])
@@ -256,10 +310,24 @@ GO
 ALTER TABLE [dbo].[Employee]  WITH CHECK ADD FOREIGN KEY([department_id])
 REFERENCES [dbo].[Department] ([department_id])
 GO
-ALTER TABLE [dbo].[Salary]  WITH CHECK ADD FOREIGN KEY([employee_id])
-REFERENCES [dbo].[Employee] ([employee_id])
+/****** Object:  StoredProcedure [dbo].[createDepartment]    Script Date: 07-06-2023 12:16:21 PM ******/
+SET ANSI_NULLS ON
 GO
-/****** Object:  StoredProcedure [dbo].[createEmployee]    Script Date: 29-03-2023 06:15:31 PM ******/
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[createDepartment]
+  @name VARCHAR(50),
+  @description VARCHAR(200)
+AS
+BEGIN
+  INSERT INTO Department (name, description, created_on, isDelete)
+  VALUES (@name, @description,GETDATE(),0);
+END;
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[createEmployee]    Script Date: 07-06-2023 12:16:21 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -278,18 +346,39 @@ CREATE PROCEDURE [dbo].[createEmployee]
 )
 AS
 BEGIN
+	if Exists(Select * from department where department_id = @departmentId)
+	Begin
 	Declare @id as int
-  INSERT INTO Employee (first_name, last_name, age, gender, department_id)
-  VALUES (@firstName, @lastName, @age, @gender, @departmentId)
+  INSERT INTO Employee (first_name, last_name, age, gender, department_id,isDelete)
+  VALUES (@firstName, @lastName, @age, @gender, @departmentId, 0)
 
   set @id = SCOPE_IDENTITY();
   print @id
-
+  if(@id <> null)
+  Begin
   Insert into Address(employee_id,street_address,city,state,zip_code)
   VALUES(@id, @street_address,@city,@state,@zip_code)
+  END
+  end
 END
 GO
-/****** Object:  StoredProcedure [dbo].[deleteEmployee]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[deleteDepartment]    Script Date: 07-06-2023 12:16:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[deleteDepartment]
+  @department_id INT
+AS
+BEGIN
+
+  UPDATE Department
+  SET IsDelete = 1,
+      updated_on = GETDATE()
+  WHERE department_id = @department_id;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[deleteEmployee]    Script Date: 07-06-2023 12:16:21 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -301,19 +390,24 @@ CREATE PROCEDURE [dbo].[deleteEmployee]
 )
 AS
 BEGIN
-  DELETE FROM Salary
-  WHERE employee_id = @employee_id;
-  
-  -- Delete address data for the employee
-  DELETE FROM Address
-  WHERE employee_id = @employee_id;
   
   -- Delete employee data
-  DELETE FROM Employee
-  WHERE employee_id = @employee_id;
+  UPDATE Employee set isDelete = 1 where employee_id = @employee_id 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[getAllEmployees]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[getAllDepartments]    Script Date: 07-06-2023 12:16:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[getAllDepartments]
+AS
+BEGIN
+
+  SELECT * FROM Department WHERE IsDelete = 0;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[getAllEmployees]    Script Date: 07-06-2023 12:16:21 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -324,11 +418,24 @@ BEGIN
   SELECT * 
   FROM Employee 
   Join Department on Employee.department_id = Department.department_id
-  left join salary on Employee.employee_id = salary.employee_id
   left join Address on Employee.employee_id = Address.employee_id
+  where Employee.isDelete = 0;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[getEmployeeInfo]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[getDepartmentInfo]    Script Date: 07-06-2023 12:16:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[getDepartmentInfo]
+  @department_id INT
+AS
+BEGIN
+
+  SELECT * FROM Department WHERE department_id = @department_id AND IsDelete = 0;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[getEmployeeInfo]    Script Date: 07-06-2023 12:16:21 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -342,12 +449,34 @@ BEGIN
   SELECT * 
   FROM Employee 
   Join Department on Employee.department_id = Department.department_id
-  left join salary on Employee.employee_id = salary.employee_id
   left join Address on Employee.employee_id = Address.employee_id
-  WHERE Employee.employee_id = @employeeId
+  WHERE Employee.employee_id = @employeeId And Employee.isDelete = 0;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[updateEmployee]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  StoredProcedure [dbo].[updateDepartment]    Script Date: 07-06-2023 12:16:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[updateDepartment]
+  @department_id INT,
+  @name VARCHAR(50),
+  @description VARCHAR(200)
+AS
+BEGIN
+  SET NOCOUNT ON;
+
+  UPDATE Department
+  SET name = @name,
+      description = @description,
+      updated_on = GETDATE()
+  WHERE department_id = @department_id;
+END;
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[updateEmployee]    Script Date: 07-06-2023 12:16:21 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -385,49 +514,111 @@ BEGIN
   WHERE employee_id = @employeeId
 END
 GO
-/****** Object:  Trigger [dbo].[auditEmployee]    Script Date: 29-03-2023 06:15:31 PM ******/
+/****** Object:  Trigger [dbo].[AddressAuditTriiger]    Script Date: 07-06-2023 12:16:21 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TRIGGER [dbo].[auditEmployee]
+
+CREATE TRIGGER [dbo].[AddressAuditTriiger]
+ON [dbo].[Address]
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @action varchar(10)
+    IF EXISTS(SELECT * FROM inserted) AND EXISTS(SELECT * FROM deleted)
+        SET @action = 'UPDATE'
+    ELSE IF EXISTS(SELECT * FROM inserted)
+        SET @action = 'INSERT'
+    ELSE IF EXISTS(SELECT * FROM deleted)
+        SET @action = 'DELETE'
+
+    INSERT INTO dbo.Address_Audit (address_id, employee_id, street_address, city, state, zip_code, action, action_date)
+    SELECT i.address_id, i.employee_id, i.street_address, i.city, i.state, i.zip_code, @action, GETDATE()
+    FROM inserted i
+    LEFT JOIN deleted d ON i.address_id = d.address_id
+    WHERE (d.address_id IS NULL) OR (i.street_address <> d.street_address OR i.city <> d.city OR i.state <> d.state OR i.zip_code <> d.zip_code)
+END
+GO
+ALTER TABLE [dbo].[Address] ENABLE TRIGGER [AddressAuditTriiger]
+GO
+/****** Object:  Trigger [dbo].[DepartmentAuditTrigger]    Script Date: 07-06-2023 12:16:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TRIGGER [dbo].[DepartmentAuditTrigger]
+ON [dbo].[Department]
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+  SET NOCOUNT ON;
+
+  DECLARE @action VARCHAR(10)
+  IF EXISTS(SELECT * FROM inserted) -- if rows were inserted or updated
+    IF EXISTS(SELECT * FROM deleted) -- if rows were also deleted
+      SET @action = 'U' -- "update"
+    ELSE
+      SET @action = 'I' -- "insert"
+  ELSE
+    SET @action = 'D' -- "delete"
+
+  INSERT INTO Department_Audit (department_id, name, description, action, action_date)
+    SELECT
+      COALESCE(i.department_id, d.department_id),
+      COALESCE(i.name, d.name),
+      COALESCE(i.description, d.description),
+      @action,
+      GETDATE()
+    FROM inserted i
+    FULL OUTER JOIN deleted d ON i.department_id = d.department_id
+    WHERE i.department_id IS NOT NULL OR d.department_id IS NOT NULL;
+END;
+GO
+ALTER TABLE [dbo].[Department] ENABLE TRIGGER [DepartmentAuditTrigger]
+GO
+/****** Object:  Trigger [dbo].[EmployeeAuditTrigger]    Script Date: 07-06-2023 12:16:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TRIGGER [dbo].[EmployeeAuditTrigger]
 ON [dbo].[Employee]
 AFTER INSERT, UPDATE, DELETE
 AS
 BEGIN
-  DECLARE @action VARCHAR(50)
-  DECLARE @create_on Date
-  DECLARE @update_on Date
-  IF EXISTS (SELECT * FROM inserted)
-  BEGIN
-    IF EXISTS (SELECT * FROM deleted)
-		BEGIN
-			SET @action = 'Update'
-			SET @update_on = GetDate()
-			SET @create_on = null
-		END
-      
+  SET NOCOUNT ON;
+
+  DECLARE @action VARCHAR(10)
+  IF EXISTS(SELECT * FROM inserted) -- if rows were inserted or updated
+    IF EXISTS(SELECT * FROM deleted) -- if rows were also deleted
+      SET @action = 'U' -- "update"
     ELSE
-		BEGIN
-			SET @action = 'Insert'
-			SET @update_on = null
-			SET @create_on = GetDate()
-		END
-      
-    INSERT INTO Employee_Audit (employee_id, action, action_date, first_name, last_name, age, gender, department_id, created_on, updated_on)
-    SELECT employee_id, @action, GETDATE(), first_name, last_name, age, gender, department_id, @create_on, @update_on
-    FROM inserted
-  END
+      SET @action = 'I' -- "insert"
   ELSE
-  BEGIN
-    SET @action = 'Delete'
-    INSERT INTO Employee_Audit (employee_id, action, action_date, first_name, last_name, age, gender, department_id, created_on, updated_on)
-    SELECT employee_id, @action, GETDATE(), first_name, last_name, age, gender, department_id, null, GetDate()
-    FROM deleted
-  END
-END
+    SET @action = 'D' -- "delete"
+
+  INSERT INTO Employee_Audit (employee_id, first_name, last_name, age, gender, department_id, action, action_date)
+    SELECT
+      COALESCE(d.employee_id, i.employee_id, deleted.employee_id),
+      COALESCE(d.first_name, i.first_name, deleted.first_name),
+      COALESCE(d.last_name, i.last_name, deleted.last_name),
+      COALESCE(d.age, i.age, deleted.age),
+      COALESCE(d.gender, i.gender, deleted.gender),
+      COALESCE(d.department_id, i.department_id, deleted.department_id),
+      @action,
+      GETDATE()
+    FROM inserted i
+    FULL OUTER JOIN deleted ON i.employee_id = deleted.employee_id
+    FULL OUTER JOIN Employee d ON i.employee_id = d.employee_id
+    WHERE i.first_name <> d.first_name OR i.last_name <> d.last_name OR i.age <> d.age OR i.gender <> d.gender OR i.department_id <> d.department_id;
+END;
 GO
-ALTER TABLE [dbo].[Employee] ENABLE TRIGGER [auditEmployee]
+ALTER TABLE [dbo].[Employee] ENABLE TRIGGER [EmployeeAuditTrigger]
 GO
 USE [master]
 GO
